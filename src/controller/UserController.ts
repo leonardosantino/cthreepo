@@ -21,7 +21,11 @@ export default class UserController {
 
         const uuid = request.params.uuid;
 
-        return await service.findById(uuid).then((u)=>{response.status(200).send(u)}) 
+        const user = await service.findById(uuid)
+        
+        if(!user){return response.status(404).send("user not Found !") }
+
+        return response.status(200).send(user) 
     }
 
     async findAll(request: Request, response: Response) {

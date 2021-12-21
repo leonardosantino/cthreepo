@@ -1,8 +1,9 @@
 import express from "express";
 import userRoutes from "./routes/userRoutes";
 import connection from "./database/connection";
+import "express-async-errors"
 
-connection().then((connection)=>{
+connection().then(()=>{
     
     const app = express();
 
