@@ -14,4 +14,10 @@ export default class User {
 
     @Column()
     age: Date;
+
+    @Column()
+    email: string;
+
+    @Column()
+    password: string;
 }
