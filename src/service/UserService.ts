@@ -1,37 +1,39 @@
-import {hash} from "bcrypt"
+import { hash } from "bcrypt"
 import User from "../entity/User";
 import { getRepository } from "typeorm";
 
-export default class UserService{
+export default class UserService {
 
-    async save(user:User){
+    private repository = getRepository(User)
 
-        const repository = getRepository(User)
+    async save(user: User) {
 
-        hash(user.password, 8, function(err, hash) {
-            user.password = hash
-        });
-
-        console.log(user.password)
-
-        return await repository.save(user)
+        user.password = await hash(user.password, 8)
+        return await this.repository.save(user)
     }
 
-    async findById(id:string){
+    async updateById(user: User) {
 
-        const repository = getRepository(User)
-
-        // if(!user){ return response.status(404).send("User not found !")}
-
-        return await repository.findOne(id)
+        if (user.password) {
+            user.password = await hash(user.password, 8)
+        }
+        return await this.repository.save(user)
     }
 
-    async findAll(){
+    async findById(id: string) {
 
-        const repository = getRepository(User)
-
-        return await repository.find()
+        return await this.repository.findOne(id)
     }
 
+    async findAll() {
+
+        return await this.repository.find()
+    }
+
+
+    async deleteById(id: string) {
+
+        return await this.repository.delete(id)
+    }
 
 }

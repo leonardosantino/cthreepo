@@ -1,22 +1,29 @@
 import { Request, Response } from "express";
 import UserService from "../service/UserService";
 
-
 export default class UserController {
 
-    
-
     async save(request: Request, response: Response) {
-
         const service = new UserService()
 
         const user = request.body;
 
-        return await service.save(user).then((u)=>{response.status(200).send(u)}) 
+        await service.save(user)
+
+        return response.status(201).send(user)
+    }
+
+    async updateById(request: Request, response: Response) {
+        const service = new UserService()
+
+        const user = request.body;
+
+        await service.updateById(user)
+
+        return response.status(200).send(user)
     }
 
     async findById(request: Request, response: Response) {
-
         const service = new UserService()
 
         const uuid = request.params.uuid;
@@ -29,12 +36,17 @@ export default class UserController {
     }
 
     async findAll(request: Request, response: Response) {
-
         const service = new UserService()
 
-        const uuid = request.params.uuid;
-
-        return await service.findAll().then((u)=>{response.status(200).send(u)}) 
+        const users = await service.findAll()
+        return response.status(200).send(users)
     }
 
+    async deleteById(request: Request, response: Response) {
+        const service = new UserService()
+        const uuid = request.params.uuid;
+
+        await service.deleteById(uuid)
+        return response.status(200).send(`User id: ${uuid} deleted!`)
+    }
 }
