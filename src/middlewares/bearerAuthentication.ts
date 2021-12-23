@@ -20,13 +20,12 @@ function bearerAuthentication(request: Request, response: Response, nextFucntion
 
     const payload = verify(token, "secret_key")
 
-
     nextFucntion()
 
   } catch (error) {
 
     console.log(error)
-    nextFucntion(error)
+    response.status(403).end("Forbiden")
   }
 }
 
