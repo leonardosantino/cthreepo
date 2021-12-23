@@ -4,36 +4,40 @@ import { getRepository } from "typeorm";
 
 export default class UserService {
 
-    private repository = getRepository(User)
+  private repository = getRepository(User)
 
-    async save(user: User) {
+  async save(user: User) {
 
-        user.password = await hash(user.password, 8)
-        return await this.repository.save(user)
+    user.password = await hash(user.password, 8)
+    return await this.repository.save(user)
+  }
+
+  async updateById(user: User) {
+
+    if (user.password) {
+      user.password = await hash(user.password, 8)
     }
+    return await this.repository.save(user)
+  }
 
-    async updateById(user: User) {
+  async findById(id: string) {
 
-        if (user.password) {
-            user.password = await hash(user.password, 8)
-        }
-        return await this.repository.save(user)
-    }
+    return await this.repository.findOne(id)
+  }
 
-    async findById(id: string) {
+  async findByEmail(email: string, password: string) {
 
-        return await this.repository.findOne(id)
-    }
+    return await this.repository.findOne({ where: { email: email, password: password } })
+  }
 
-    async findAll() {
+  async findAll() {
 
-        return await this.repository.find()
-    }
+    return await this.repository.find()
+  }
 
+  async deleteById(id: string) {
 
-    async deleteById(id: string) {
-
-        return await this.repository.delete(id)
-    }
+    return await this.repository.delete(id)
+  }
 
 }

@@ -3,50 +3,50 @@ import UserService from "../service/UserService";
 
 export default class UserController {
 
-    async save(request: Request, response: Response) {
-        const service = new UserService()
+  async save(request: Request, response: Response) {
+    const service = new UserService()
 
-        const user = request.body;
+    const user = request.body;
 
-        await service.save(user)
+    await service.save(user)
 
-        return response.status(201).send(user)
-    }
+    return response.status(201).send(user)
+  }
 
-    async updateById(request: Request, response: Response) {
-        const service = new UserService()
+  async updateById(request: Request, response: Response) {
+    const service = new UserService()
 
-        const user = request.body;
+    const user = request.body;
 
-        await service.updateById(user)
+    await service.updateById(user)
 
-        return response.status(200).send(user)
-    }
+    return response.status(200).send(user)
+  }
 
-    async findById(request: Request, response: Response) {
-        const service = new UserService()
+  async findById(request: Request, response: Response) {
+    const service = new UserService()
 
-        const uuid = request.params.uuid;
+    const uuid = request.params.uuid;
 
-        const user = await service.findById(uuid)
-        
-        if(!user){return response.status(404).send("user not Found !") }
+    const user = await service.findById(uuid)
 
-        return response.status(200).send(user) 
-    }
+    if (!user) { return response.status(404).send("user not Found !") }
 
-    async findAll(request: Request, response: Response) {
-        const service = new UserService()
+    return response.status(200).send(user)
+  }
 
-        const users = await service.findAll()
-        return response.status(200).send(users)
-    }
+  async findAll(request: Request, response: Response) {
+    const service = new UserService()
 
-    async deleteById(request: Request, response: Response) {
-        const service = new UserService()
-        const uuid = request.params.uuid;
+    const users = await service.findAll()
+    return response.status(200).send(users)
+  }
 
-        await service.deleteById(uuid)
-        return response.status(200).send(`User id: ${uuid} deleted!`)
-    }
+  async deleteById(request: Request, response: Response) {
+    const service = new UserService()
+    const uuid = request.params.uuid;
+
+    await service.deleteById(uuid)
+    return response.status(200).send(`User id: ${uuid} deleted!`)
+  }
 }
